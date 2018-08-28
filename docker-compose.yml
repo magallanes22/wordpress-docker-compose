@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PSWD}
+      WORDPRES_DB_HOST: ${WP_DB_HOST}
+      WORDPRESS_DB_USER: ${WP_DB_USER}
+      WORDPRESS_DB_NAME: ${WP_DB_NAME}
+    links: 
+        - mysql:mysql
+    volumes: 
+        - ./wordpress-docroot:/var/www/html
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${WP_DB_USER}
+      MYSQL_PASSWORD: ${WP_DB_PSWD}
+      MYSQL_DATABASE: ${WP_DB_NAME}
+    volumes: 
+        - ./mysql-data:/var/lib/mysql
+      
+    
